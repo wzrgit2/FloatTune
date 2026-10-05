@@ -2,6 +2,7 @@ const el = id => document.getElementById(id);
 const card = el('card');
 const coverImg = el('coverImg'), titleEl = el('title'), artistEl = el('artist');
 const bar = el('bar'), barFill = el('barFill'), barKnob = el('barKnob');
+let canSeek = true;
 const curEl = el('cur'), durEl = el('dur'), toggleBtn = el('toggle');
 const miniCoverImg = el('miniCoverImg'), miniTitleEl = el('miniTitle'), mToggle = el('mToggle');
 
@@ -73,6 +74,16 @@ function trackProgress(s, now) {
 
 function apply(s) {
   state = s;
+  // a player may advertise that it cannot jump (e.g. QQ Music reports
+  // IsPlaybackPositionEnabled=false and silently drops seek requests)
+  const seekable = s.playing ? (s.canSeek !== false) : false;
+  if (seekable !== canSeek) {
+    canSeek = seekable;
+    bar.classList.toggle('noseek', !canSeek);
+    bar.title = state.playing
+      ? (canSeek ? '拖动跳转' : '该播放器不支持拖动进度（系统接口未开放）')
+      : '未在播放';
+  }
   const nowMs = Date.now();
   lastStateAt = nowMs;
   trackProgress(s, nowMs);
@@ -144,7 +155,7 @@ function seekFromEvent(e) {
   const r = bar.getBoundingClientRect();
   return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (state.duration || 0);
 }
-bar.addEventListener('mousedown', e => { if (!state.playing) return; dragging = true; dragPos = seekFromEvent(e); e.preventDefault(); });
+bar.addEventListener('mousedown', e => { if (!state.playing || !canSeek) return; dragging = true; dragPos = seekFromEvent(e); e.preventDefault(); });
 window.addEventListener('mousemove', e => { if (dragging) dragPos = seekFromEvent(e); });
 window.addEventListener('mouseup', () => {
   if (!dragging) return;

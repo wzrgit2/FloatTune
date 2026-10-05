@@ -56,6 +56,10 @@ body { font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif; -webki
 #barFill { position: absolute; left: 0; height: 4px; width: 0%; border-radius: 2px; background: var(--accent); }
 #barKnob { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--fg); left: 0%; transform: translateX(-50%); opacity: 0; transition: opacity .15s; }
 #bar:hover #barKnob { opacity: 1; }
+/* players that cannot seek: don't invite a drag that will do nothing */
+#bar.noseek { cursor: default; }
+#bar.noseek:hover #barKnob { opacity: 0; }
+#bar.noseek::before { opacity: 0.5; }
 #times { display: flex; justify-content: space-between; font-size: 10px; color: var(--fg-dim); margin-top: -3px; }
 
 #right { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; padding-top: 10px; }

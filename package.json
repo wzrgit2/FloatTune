@@ -1,7 +1,7 @@
 {
   "name": "floattune",
   "productName": "FloatTune",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "author": "Lining",
   "description": "FloatTune - a floating desktop media controller for Windows (controls whatever is playing via the system media API)",

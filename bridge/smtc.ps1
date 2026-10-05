@@ -191,6 +191,7 @@ function Get-NowPlaying {
     artist   = [string]$props.Artist
     album    = [string]$props.AlbumTitle
     status   = $pi.PlaybackStatus.ToString()
+    canSeek  = [bool]$pi.Controls.IsPlaybackPositionEnabled   # some players (QQ Music) report false and ignore seeks
     position = [math]::Round($tl.Position.TotalSeconds, 2)
     duration = [math]::Round($tl.EndTime.TotalSeconds, 2)
     cover    = $script:CoverPath
