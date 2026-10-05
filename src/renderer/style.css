@@ -1,0 +1,128 @@
+:root {
+  --card-alpha: 0.45;
+  --bg: rgba(16,19,26,var(--card-alpha));
+  --bg2: rgba(255,255,255,0.06);
+  --bg2h: rgba(255,255,255,0.16);
+  --fg: #eef1f6;
+  --fg-dim: #9aa4b2;
+  --line: rgba(255,255,255,0.10);
+  --accent: #5aa9ff;
+}
+body[data-theme="light"] {
+  --bg: rgba(250,250,252,calc(var(--card-alpha) + 0.2));
+  --bg2: rgba(0,0,0,0.06);
+  --bg2h: rgba(0,0,0,0.13);
+  --fg: #1b1f27;
+  --fg-dim: #5d6675;
+  --line: rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; }
+body { font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif; -webkit-user-select: none; user-select: none; }
+
+#card {
+  position: relative; width: 100%; height: 100%;
+  display: flex; align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  -webkit-app-region: drag;
+  overflow: hidden;
+}
+#card.idle { opacity: 0.88; }
+/* pinned: not draggable, not resizable */
+#card.locked { -webkit-app-region: no-drag; }
+#card.locked #grip { display: none; }
+#card.idle #coverImg, #card.idle #miniCoverImg { filter: grayscale(0.7); }
+
+#full { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; }
+
+#cover { width: 72px; height: 72px; flex: 0 0 72px; border-radius: 9px; overflow: hidden;
+  background: var(--bg2); display: flex; align-items: center; justify-content: center; }
+#cover img { width: 100%; height: 100%; object-fit: cover; display: none; }
+#cover img.on { display: block; }
+#coverPh { font-size: 24px; color: var(--fg-dim); }
+/* the placeholder must disappear once real artwork is shown (it used to sit next to it) */
+#coverImg.on ~ #coverPh, #miniCoverImg.on ~ #miniPh { display: none; }
+
+#mid { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+#title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#artist { font-size: 11px; color: var(--fg-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+#bar { position: relative; height: 14px; display: flex; align-items: center; -webkit-app-region: no-drag; cursor: pointer; }
+#bar::before { content: ""; position: absolute; left: 0; right: 0; height: 4px; border-radius: 2px; background: var(--bg2h); }
+#barFill { position: absolute; left: 0; height: 4px; width: 0%; border-radius: 2px; background: var(--accent); }
+#barKnob { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--fg); left: 0%; transform: translateX(-50%); opacity: 0; transition: opacity .15s; }
+#bar:hover #barKnob { opacity: 1; }
+#times { display: flex; justify-content: space-between; font-size: 10px; color: var(--fg-dim); margin-top: -3px; }
+
+#right { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; padding-top: 10px; }
+#btns { display: flex; gap: 5px; align-items: center; -webkit-app-region: no-drag; }
+#btns button {
+  width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--line);
+  background: var(--bg2); color: var(--fg); font-size: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; padding: 0;
+}
+#btns button:hover { background: var(--bg2h); }
+#btns #toggle { width: 32px; height: 32px; font-size: 12px; }
+
+/* mini player (dragged onto the taskbar) */
+#minibar { display: none; align-items: center; gap: 8px; width: 100%; min-width: 0; }
+#miniCover { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px; overflow: hidden;
+  background: var(--bg2); display: flex; align-items: center; justify-content: center; }
+#miniCover img { width: 100%; height: 100%; object-fit: cover; display: none; }
+#miniCover img.on { display: block; }
+#miniPh { font-size: 13px; color: var(--fg-dim); }
+#miniTitle { flex: 1 1 auto; min-width: 0; font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#miniBtns { display: flex; gap: 4px; -webkit-app-region: no-drag; }
+#miniBtns button {
+  width: 24px; height: 24px; border-radius: 6px; border: none; background: transparent;
+  color: var(--fg); font-size: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
+}
+#miniBtns button:hover { background: var(--bg2h); }
+#miniBtns #mToggle { font-size: 11px; }
+
+#card.mini { padding: 6px 10px; border-radius: 10px; }
+#card.mini #full, #card.mini #grip, #card.mini #settings, #card.mini #min, #card.mini #close { display: none; }
+#card.mini #minibar { display: flex; }
+
+/* window buttons: glyphs only, no background plate */
+#pin, #settings, #min, #close {
+  position: absolute; top: 3px; width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; background: transparent; color: var(--fg-dim);
+  font-size: 10px; line-height: 1; padding: 0; margin: 0;
+  cursor: pointer; -webkit-app-region: no-drag;
+}
+#min { right: 24px; }
+#close { right: 6px; }
+#settings { right: 42px; font-size: 11px; }
+#pin { right: 60px; font-size: 9px; }
+#pin.on { color: var(--accent); }
+#settings:hover, #min:hover { color: var(--fg); }
+#close:hover { color: #ff6b6b; }
+
+#grip { position: absolute; right: 2px; bottom: 2px; width: 14px; height: 14px; cursor: nwse-resize;
+  -webkit-app-region: no-drag;
+  background: linear-gradient(135deg, transparent 50%, var(--bg2h) 50%); border-bottom-right-radius: 11px; }
+
+@media (max-width: 355px) {
+  #cover { width: 56px; height: 56px; flex-basis: 56px; }
+  #times { display: none; }
+  #btns button { width: 26px; height: 26px; }
+  #btns #toggle { width: 30px; height: 30px; }
+}
+@media (max-width: 300px) {
+  #cover { display: none; }
+  #title { font-size: 12px; }
+  #artist { font-size: 10px; }
+}
+@media (max-height: 100px) { #times { display: none; } }
+@media (max-height: 88px) {
+  #artist { display: none; }
+  #right { padding-top: 4px; }
+  #cover { width: 48px; height: 48px; flex-basis: 48px; }
+}
+@media (max-height: 74px) { #bar { display: none; } #coverPh { font-size: 18px; } }

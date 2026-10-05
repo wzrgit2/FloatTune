@@ -1,0 +1,11 @@
+const fs = require('fs');
+const p = 'C:\\Users\\SuperWan\\.openclaw\\workspace\\music-widget\\src\\main.js';
+let s = fs.readFileSync(p, 'utf8');
+const before = (s.match(/MusicController/g) || []).length;
+s = s.split("'MusicController-bridge.log'").join("'floattune-bridge.log'");
+s = s.split("'MusicController - 未在播放'").join("'FloatTune - 未在播放'");
+s = s.split("'MusicController 设置'").join("'FloatTune 设置'");
+s = s.split("'MusicController'").join("'FloatTune'");
+const after = (s.match(/MusicController/g) || []).length;
+fs.writeFileSync(p, s);
+console.log('replaced: before=' + before + ' after=' + after);

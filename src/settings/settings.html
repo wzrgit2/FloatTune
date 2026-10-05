@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>FloatTune 设置</title>
+<link rel="stylesheet" href="settings.css">
+</head>
+<body>
+<h1>设置</h1>
+
+<section>
+  <div class="row">
+    <label>主题</label>
+    <div class="seg" id="theme">
+      <button data-v="dark" class="on">深色</button>
+      <button data-v="light">浅色</button>
+    </div>
+  </div>
+  <div class="row">
+    <label>主题色</label>
+    <div class="swatches" id="accent">
+      <button data-c="#5aa9ff" style="--c:#5aa9ff"></button>
+      <button data-c="#7c6cff" style="--c:#7c6cff"></button>
+      <button data-c="#39d98a" style="--c:#39d98a"></button>
+      <button data-c="#ffb020" style="--c:#ffb020"></button>
+      <button data-c="#ff6b9d" style="--c:#ff6b9d"></button>
+      <input type="color" id="accentCustom" value="#5aa9ff">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="row"><label>窗口置顶</label><input type="checkbox" id="alwaysOnTop"></div>
+  <div class="row"><label>真透明窗口（实验性）</label><input type="checkbox" id="transparentWindow"></div>
+  <div class="row"><label>改用亚克力材质</label><input type="checkbox" id="acrylic"></div>
+  <div class="row"><label>卡片透明度</label><div class="rangewrap"><input type="range" id="cardAlpha" min="15" max="95" step="5"><span id="cardAlphaVal">45%</span></div></div>
+  <div class="row"><label>开机自启（静默）</label><input type="checkbox" id="autostart"></div>
+  <div class="row"><label>没在播放时自动隐藏</label><input type="checkbox" id="autoHideIdle"></div>
+  <div class="row"><label>隐藏延迟（秒）</label><input type="number" id="idleGrace" min="0" max="120" step="1" style="width:80px"></div>
+  <p class="hint">这两项需要重启程序才生效。若开启「真透明」后卡片变成空白，请关掉它（部分环境下会这样）。</p>
+</section>
+
+<section>
+  <div class="row"><label>启用全局快捷键</label><input type="checkbox" id="hkEnabled"></div>
+  <div class="row"><label>播放 / 暂停</label><input class="hk" id="hkPlaypause" readonly placeholder="点击后按下组合键"></div>
+  <div class="row"><label>上一首</label><input class="hk" id="hkPrev" readonly placeholder="点击后按下组合键"></div>
+  <div class="row"><label>下一首</label><input class="hk" id="hkNext" readonly placeholder="点击后按下组合键"></div>
+  <p class="hint">点击输入框后按下组合键（必须含 Ctrl / Alt / Shift）。按 Esc 取消。</p>
+</section>
+
+<div class="actions">
+  <button id="reset">恢复默认</button>
+  <span class="spacer"></span>
+  <button id="close" class="primary">关闭</button>
+</div>
+<div id="toast"></div>
+<script src="settings.js"></script>
+</body>
+</html>
